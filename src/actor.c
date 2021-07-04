@@ -12,8 +12,10 @@
 #include "../res/tiles/enemy_arrow.h"
 
 // UINT8 hiwater;
+UINT8 detective;
+UINT8 enemy_arrow;
 
-actor_t actor[2] =
+const actor_t actor[2] =
     {
         {.x = 60,
          .y = 120,
@@ -21,17 +23,21 @@ actor_t actor[2] =
          .tile_index = 0,
          .tile_count = (sizeof(detective_data)),
          .tile_data = detective_data,
-         .actor_metasprite = detective_metasprites[0]},
-
+         .actor_metasprite = detective_metasprites,
+         .metasprite_frame_index = 0},
         {.x = 40,
          .y = 60,
          .sprite_index = 0,
          .tile_index = 0,
          .tile_count = (sizeof(enemy_arrow_data)),
          .tile_data = enemy_arrow_data,
-         .actor_metasprite = enemy_arrow_metasprites[0]}};
+         .actor_metasprite = enemy_arrow_metasprites,
+         .metasprite_frame_index = 0}};
 
-UINT8 load_scene_actors(actor_t *actor) {
+UINT8 load_scene_actors(actor_t *actor, UINT8 hiwater) {
+    actor->tile_index = hiwater;
     set_sprite_data(actor->tile_index, actor->tile_count, actor->tile_data);
-    move_metasprite(actor->actor_metasprite, actor->tile_index, actor->sprite_index, actor->x, actor->y);
+    hiwater += (sizeof(actor->tile_data) >> 4);
+    hiwater += move_metasprite(actor->actor_metasprite[actor->metasprite_frame_index], actor->tile_index, actor->sprite_index, actor->x, actor->y);
+    return hiwater;
 }

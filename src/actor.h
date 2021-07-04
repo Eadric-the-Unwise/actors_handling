@@ -17,11 +17,10 @@ typedef struct actor_t {
     UINT8 sprite_index;
     UINT8 tile_index;
     UINT8 tile_count;
-    UINT8 tile_data;
-    UINT8 actor_metasprite;
+    UINT8 *tile_data;
+    metasprite_t *actor_metasprite;
+    UINT8 metasprite_frame_index;
 
 } actor_t;
-UINT8 load_scene_actors(actor_t *actor);
-void set_sprite_data(uint8_t first_tile, uint8_t nb_tiles, const uint8_t *data);
-uint8_t move_metasprite(const metasprite_t *metasprite, uint8_t base_tile, uint8_t base_sprite, uint8_t x, uint8_t y);
-extern struct actor_t actor[2];
+extern const struct actor_t actor[2];
+UINT8 load_scene_actors(actor_t *actor, UINT8 hiwater);

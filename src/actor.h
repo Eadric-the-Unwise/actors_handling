@@ -18,7 +18,7 @@ typedef struct actor_t {
     UINT8 tile_index;
     UINT8 tile_count;
     UINT8 *tile_data;
-    metasprite_t *actor_metasprite;
+    metasprite_t *actor_metasprites;
     UINT8 metasprite_frame_index;
 
 } actor_t;

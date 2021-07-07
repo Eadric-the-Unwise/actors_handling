@@ -7,9 +7,19 @@
 #include <stdio.h>
 
 #include "level1.h"
+#include "scene.h"
 
 UINT8 joy;
 UINT8 hiwater;
+
+void move_enemies() {
+    actor_t *current_actor = &active_actors[1];
+
+    for (UINT8 i = 1; i < active_actors_count; i++) {
+        current_actor->x--;
+        current_actor++;
+    }
+}
 
 void main() {
     BGP_REG = 0x1B;
@@ -20,22 +30,24 @@ void main() {
     // SHOW_BKG;
     SHOW_SPRITES;
     hiwater = 0;
-    load_scene_actors(&level1[0], level1_count);
 
+    // set_sprite_data(0, (sizeof(detective_data) >> 4), detective_data);
+    // set_sprite_data(0x0C, (sizeof(enemy_arrow_data) >> 4), enemy_arrow_data);
+
+    // move_metasprite(detective_metasprites[0], 0, 0, 60, 120);
+    // move_metasprite(enemy_arrow_metasprites[0], 0x0C, 2, 40, 40);
+    // return;
+    load_scene_actors(&level1[0], level1_count);
     while (TRUE) {
         joy = joypad();
-
-        if (joy & J_SELECT) {
-            render_actors();
-        } else if (joy & J_START) {
-            wait_vbl_done();
+        if (joy & J_LEFT) {
+            active_actors[ACTOR_DETECTIVE].x--;
+        } else if (joy & J_RIGHT) {
+            active_actors[ACTOR_DETECTIVE].x++;
         }
+        move_enemies();
+        render_actors();
+        wait_vbl_done();
         // load_scene_actors(&actor[0]);  //"&actors[0]" is just "actors"
-
-        // set_sprite_data(0, (sizeof(detective_data) >> 4), detective_data);
-        // set_sprite_data(0x0C, (sizeof(enemy_arrow_data) >> 4), enemy_arrow_data);
-
-        // move_metasprite(detective_metasprites[0], 0, 0, 60, 120);
-        // move_metasprite(enemy_arrow_metasprites[0], 0x0C, 2, 40, 40);
     }
 }

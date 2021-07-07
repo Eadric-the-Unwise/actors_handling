@@ -6,7 +6,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include "actor.h"
+#include "level1.h"
 
 UINT8 joy;
 UINT8 hiwater;
@@ -17,13 +17,25 @@ void main() {
     OBP1_REG = 0xE1;
     SPRITES_8x16;
     DISPLAY_ON;
-    SHOW_BKG;
+    // SHOW_BKG;
     SHOW_SPRITES;
-    load_scene_actors(&actor[0], hiwater);
+    hiwater = 0;
+    load_scene_actors(&level1[0], level1_count);
 
-    // set_sprite_data(0, (sizeof(detective_data) >> 4), detective_data);
-    // set_sprite_data(0x0C, (sizeof(enemy_arrow_data) >> 4), enemy_arrow_data);
+    while (TRUE) {
+        joy = joypad();
 
-    // move_metasprite(detective_metasprites[0], 0, 0, 60, 120);
-    // move_metasprite(enemy_arrow_metasprites[0], 0x0C, 2, 40, 40);
+        if (joy & J_SELECT) {
+            render_actors();
+        } else if (joy & J_START) {
+            wait_vbl_done();
+        }
+        // load_scene_actors(&actor[0]);  //"&actors[0]" is just "actors"
+
+        // set_sprite_data(0, (sizeof(detective_data) >> 4), detective_data);
+        // set_sprite_data(0x0C, (sizeof(enemy_arrow_data) >> 4), enemy_arrow_data);
+
+        // move_metasprite(detective_metasprites[0], 0, 0, 60, 120);
+        // move_metasprite(enemy_arrow_metasprites[0], 0x0C, 2, 40, 40);
+    }
 }

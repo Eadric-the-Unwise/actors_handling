@@ -4,6 +4,8 @@
 #define SIZE(A) (UWORD) & (__SIZE_PREFIX(A))
 #define OFFSET(A) (void *)&(A)
 
+#define MAX_ACTIVE_ACTORS 2
+
 #include <gb/gb.h>
 #include <gb/metasprites.h>
 
@@ -14,13 +16,14 @@ typedef struct actor_t {
     UINT8 x;
     UINT8 y;
     UBYTE direction;
-    UINT8 sprite_index;
-    UINT8 tile_index;
     UINT8 tile_count;
-    UINT8 *tile_data;
-    metasprite_t *actor_metasprites;
+    const UINT8 *tile_data;
+    const metasprite_t **actor_metasprites;
     UINT8 metasprite_frame_index;
 
 } actor_t;
-extern const struct actor_t actor[2];
-UINT8 load_scene_actors(actor_t *actor, UINT8 hiwater);
+extern const struct actor_t level1[2];
+extern const uint8_t level1_count;
+// extern struct actor_t actor[2];
+void load_scene_actors(actor_t *actor, uint8_t active_actors_count);
+void render_actors();

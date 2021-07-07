@@ -8,7 +8,7 @@
 
 const uint8_t level2_count = 4;
 
-const actor_t level2[4] =
+const actor_t level2_actors[4] =
     {
         {.x = 50,
          .y = 130,

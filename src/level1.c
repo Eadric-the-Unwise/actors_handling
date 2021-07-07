@@ -8,7 +8,7 @@
 
 const uint8_t level1_count = 2;
 
-const actor_t level1[2] =
+const actor_t level1_actors[2] =
     {
         {.x = 60,
          .y = 120,
@@ -24,3 +24,5 @@ const actor_t level1[2] =
          .tile_data = enemy_arrow_data,
          .actor_metasprites = enemy_arrow_metasprites,
          .metasprite_frame_index = 0}};
+
+const level_t level1 = {.actors = level1_actors};

@@ -15,7 +15,6 @@ void load_scene_actors(actor_t *actor, uint8_t actors_count) {
         set_sprite_data(hiwater, actor->tile_count, actor->tile_data);
         current_actor->x = actor->x;
         current_actor->y = actor->y;
-        current_actor->tile_count = actor->tile_count;
         current_actor->actor_metasprites = actor->actor_metasprites;
         current_actor->metasprite_frame_index = actor->metasprite_frame_index;
         hiwater += actor->tile_count;

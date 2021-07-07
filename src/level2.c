@@ -6,8 +6,6 @@
 #include "../res/tiles/enemy_arrow.h"
 #include "scene.h"
 
-const uint8_t level2_count = 4;
-
 const actor_t level2_actors[4] =
     {
         {.x = 50,
@@ -38,3 +36,5 @@ const actor_t level2_actors[4] =
          .tile_data = enemy_arrow_data,
          .actor_metasprites = enemy_arrow_metasprites,
          .metasprite_frame_index = 0}};
+const level_t level2 = {.actors = level2_actors,
+                        .actor_count = 4};

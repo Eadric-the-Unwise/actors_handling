@@ -38,7 +38,7 @@ void main() {
     // move_metasprite(detective_metasprites[0], 0, 0, 60, 120);
     // move_metasprite(enemy_arrow_metasprites[0], 0x0C, 2, 40, 40);
     // return;
-    load_scene_actors(level1.actors, level1_count);
+    load_scene_actors(level1.actors, level1.actor_count);
     while (TRUE) {
         joy = joypad();
         if (joy & J_LEFT) {
@@ -47,9 +47,9 @@ void main() {
             active_actors[ACTOR_DETECTIVE].x++;
         }
         if (joy & J_A) {
-            load_scene_actors(&level2[0], level2_count);
+            load_scene_actors(level2.actors, level2.actor_count);
         } else if (joy & J_B) {
-            load_scene_actors(&level1[0], level1_count);
+            load_scene_actors(level1.actors, level1.actor_count);
         }
         move_enemies();
         render_actors();

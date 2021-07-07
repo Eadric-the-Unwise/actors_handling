@@ -3,10 +3,10 @@
 #include <gb/gb.h>
 
 // array of avaliable actors
-actor_t active_actors[MAX_ACTIVE_ACTORS];
-UINT8 active_actors_count;  // amount of actors that are currently active
+actor_t active_actors[MAX_ACTIVE_ACTORS];  // active_actors[] is your working structures in WRAM
+UINT8 active_actors_count;                 // amount of actors that are currently active
 
-void load_scene_actors(actor_t *actor, uint8_t actors_count) {
+void load_scene_actors(const actor_t *actor, uint8_t actors_count) {
     actor_t *current_actor = active_actors;
 
     UINT8 hiwater = 0;
@@ -21,7 +21,7 @@ void load_scene_actors(actor_t *actor, uint8_t actors_count) {
         current_actor++;
         actor++;
     }
-    active_actors_count = actors_count;
+    active_actors_count = actors_count;  //copies from ROM to RAM
 }
 
 void render_actors() {

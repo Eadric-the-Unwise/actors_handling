@@ -22,13 +22,14 @@ typedef struct actor_t {
 
 typedef struct level_t {
     const actor_t *actors;
+    UINT8 actor_count;
 } level_t;
 
 extern actor_t active_actors[MAX_ACTIVE_ACTORS];
 
 extern UINT8 active_actors_count;
 
-void load_scene_actors(actor_t *actor, uint8_t actors_count);
+void load_scene_actors(const actor_t *actor, uint8_t actors_count);
 void render_actors();
 
 #endif

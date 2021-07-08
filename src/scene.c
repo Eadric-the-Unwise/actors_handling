@@ -23,7 +23,7 @@ void load_scene_actors(const actor_t *actor, uint8_t actors_count) {
     }
     active_actors_count = actors_count;  //copies from ROM to RAM
 }
-
+//calls move_metasprite();, increases hiwater, and clears unnecessary Sprites in OAM after the hiwater's value
 void render_actors() {
     actor_t *current_actor = active_actors;
     // draw each metasprite

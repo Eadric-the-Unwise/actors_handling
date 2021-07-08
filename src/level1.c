@@ -8,14 +8,14 @@
 
 const actor_t level1_actors[2] =
     {
-        {.x = 60,
+        {.x = 88,
          .y = 120,
          .tile_count = (sizeof(detective_data) >> 4),
          .tile_index = 0,
          .tile_data = detective_data,
          .actor_metasprites = detective_metasprites,
          .metasprite_frame_index = 0},
-        {.x = 40,
+        {.x = 160,
          .y = 60,
          .tile_count = (sizeof(enemy_arrow_data) >> 4),
          .tile_index = 0,

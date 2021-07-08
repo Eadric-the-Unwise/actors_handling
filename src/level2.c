@@ -8,15 +8,15 @@
 
 const actor_t level2_actors[4] =
     {
-        {.x = 50,
-         .y = 130,
+        {.x = 140,
+         .y = 36,
          .tile_count = (sizeof(detective_data) >> 4),
          .tile_index = 0,
          .tile_data = detective_data,
          .actor_metasprites = detective_metasprites,
          .metasprite_frame_index = 0},
-        {.x = 80,
-         .y = 70,
+        {.x = 160,
+         .y = 140,
          .tile_count = (sizeof(enemy_arrow_data) >> 4),
          .tile_index = 0,
          .tile_data = enemy_arrow_data,
@@ -30,7 +30,7 @@ const actor_t level2_actors[4] =
          .actor_metasprites = enemy_arrow_metasprites,
          .metasprite_frame_index = 0},
         {.x = 140,
-         .y = 20,
+         .y = 80,
          .tile_count = (sizeof(enemy_arrow_data) >> 4),
          .tile_index = 0,
          .tile_data = enemy_arrow_data,

@@ -3,6 +3,8 @@
 #include <gb/gb.h>
 
 #include "../res/tiles/detective.h"
+#include "../res/tiles/detective_large_walk.h"
+#include "../res/tiles/detective_platform_stand.h"
 #include "../res/tiles/enemy_arrow.h"
 #include "scene.h"
 
@@ -10,10 +12,10 @@ const actor_t level1_actors[2] =
     {
         {.x = 88,
          .y = 120,
-         .tile_count = (sizeof(detective_data) >> 4),
+         .tile_count = (sizeof(detective_platform_stand_data) >> 4),
          .tile_index = 0,
-         .tile_data = detective_data,
-         .actor_metasprites = detective_metasprites,
+         .tile_data = detective_platform_stand_data,
+         .actor_metasprites = detective_platform_stand_metasprites,
          .metasprite_frame_index = 0},
         {.x = 160,
          .y = 60,

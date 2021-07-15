@@ -29,7 +29,7 @@ void move_enemies() {
 // Define your OBJ and BGP palettes, show SPRITES, turn on DISPLAY
 /******************************/
 void main() {
-    BGP_REG = 0x1B;
+    BGP_REG = 0x00;
     OBP0_REG = 0xE4;
     OBP1_REG = 0xE1;
     SPRITES_8x16;

@@ -5,7 +5,7 @@
 #include <gb/gb.h>
 #include <gb/metasprites.h>
 
-#define MAX_ACTIVE_ACTORS 4
+#define MAX_ACTIVE_ACTORS 8
 #define ACTOR_DETECTIVE 0
 
 typedef struct actor_t {

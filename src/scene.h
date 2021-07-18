@@ -7,6 +7,8 @@
 
 #define MAX_ACTIVE_ACTORS 8
 #define ACTOR_DETECTIVE 0
+#define FACE_LEFT 1
+#define FACE_RIGHT 0
 
 typedef struct actor_t {
     UINT8 x;
@@ -14,6 +16,7 @@ typedef struct actor_t {
     UBYTE direction;
     UINT8 tile_count;
     UINT8 tile_index;
+    UINT8 frame_delay;
     const UINT8 *tile_data;
     const metasprite_t **actor_metasprites;
     UINT8 metasprite_frame_index;
@@ -31,5 +34,6 @@ extern UINT8 active_actors_count;
 
 void load_scene_actors(const actor_t *actor, uint8_t actors_count);
 void render_actors();
+void animate_detective();
 
 #endif

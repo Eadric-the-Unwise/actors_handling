@@ -46,8 +46,14 @@ void main() {
         /******************************/
         if (joy & J_LEFT) {
             active_actors[ACTOR_DETECTIVE].x--;
+            active_actors[ACTOR_DETECTIVE].direction = FACE_LEFT;
+            animate_detective();
         } else if (joy & J_RIGHT) {
             active_actors[ACTOR_DETECTIVE].x++;
+            active_actors[ACTOR_DETECTIVE].direction = FACE_RIGHT;
+            animate_detective();
+        } else if (joy & J_DOWN) {
+            active_actors[ACTOR_DETECTIVE].metasprite_frame_index = 1;
         }
         /******************************/
         // Load stages on button press
@@ -57,11 +63,22 @@ void main() {
         } else if (joy & J_B) {
             load_scene_actors(level1.actors, level1.actor_count);
         }
+
+        /******************************/
+        // NOT PRESSING DIRECTION
+        /******************************/
+        if (!(joy & (J_LEFT | J_RIGHT | J_UP | J_DOWN))) {
+            if (active_actors[ACTOR_DETECTIVE].metasprite_frame_index != 0) {
+                active_actors[ACTOR_DETECTIVE].metasprite_frame_index = 0;
+            }
+        }
+
         move_enemies();
         render_actors();  //see scene.c
         wait_vbl_done();
     }
 }
+
 /******************************/
 // Disregard code below this line. For reference only
 /******************************/

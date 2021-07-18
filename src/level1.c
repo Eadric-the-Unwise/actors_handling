@@ -13,9 +13,11 @@ const actor_t level1_actors[2] =
     {
         {.x = 88,
          .y = 120,
+         .direction = FACE_LEFT,
          .tile_count = (sizeof(detective_large_data) >> 4),
          .tile_index = 0,
          .tile_data = detective_large_data,
+         .frame_delay = 7,
          .actor_metasprites = detective_large_metasprites,
          .metasprite_frame_index = 0},
         {.x = 160,

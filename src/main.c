@@ -16,6 +16,11 @@ UINT8 joy;
 UINT8 hiwater;
 UINT8 detective_platform_frame_start;
 UINT8 detective_platform_frame_end;
+UINT8 playerlocation[2];
+UBYTE jumping = 0;
+INT8 gravity = -1;
+UINT8 currentspeedY;
+UINT8 floorYposition;
 
 /******************************/
 // Load enemies sequencially up to MAX_ACTIVE_ACTORS
@@ -37,6 +42,35 @@ void move_arrows() {
         current_actor++;
     }
 }
+INT8 wouldhitsurface(UINT8 projectedYPosition) {
+    if (projectedYPosition >= floorYposition) {
+        return floorYposition;
+    }
+    return -1;
+}
+
+void jump() {
+    INT8 possiblesurfaceY;
+    actor_t *detective = &active_actors[ACTOR_DETECTIVE];
+
+    if (jumping == 0) {
+        jumping = 1;
+        currentspeedY = 10;
+    }
+    if (currentspeedY == 0) {
+        currentspeedY = 0;
+    }
+
+    currentspeedY = currentspeedY + gravity;
+
+    detective->y = detective->y - currentspeedY;
+
+    possiblesurfaceY = wouldhitsurface(detective->y);
+
+    if (possiblesurfaceY > -1) {
+        jumping = 0;
+    }
+}
 // if (current_actor->direction == FACE_RIGHT) {
 //     for (UINT8 i = 1; i < active_actors_count; i++) {
 //         current_actor->x++;
@@ -56,8 +90,12 @@ void main() {
     // SHOW_BKG;
     SHOW_SPRITES;
     hiwater = 0;
+    floorYposition = 120;
+    jumping = 0;
 
     load_scene_actors(level1.actors, level1.actor_count);  //Loads level1.c actors
+    playerlocation[0] = active_actors[ACTOR_DETECTIVE].x;
+    playerlocation[1] = active_actors[ACTOR_DETECTIVE].y;
     while (TRUE) {
         joy = joypad();
         /******************************/
@@ -73,7 +111,9 @@ void main() {
             animate_detective();
         } else if (joy & J_DOWN) {
             animate_detective();
-        } else if (joy & J_A) {
+        }
+        if (joy & J_A || jumping == 1) {
+            jump();
             animate_detective();
         }
         /******************************/
@@ -114,19 +154,19 @@ void animate_detective() {
             active_actors[ACTOR_DETECTIVE].metasprite_frame_index = 1;
         }
     }
-    if (joy & J_A) {
+    if (jumping == 1) {
         if (active_actors[ACTOR_DETECTIVE].metasprite_frame_index < 11) {
             active_actors[ACTOR_DETECTIVE].metasprite_frame_index = 11;
             detective_platform_frame_start = 11;
             detective_platform_frame_end = 16;
         }
-    } else if ((joy & (J_LEFT | J_RIGHT) && (joy & J_A))) {
+    } else if ((joy & (J_LEFT | J_RIGHT) && jumping == 1)) {
         if (active_actors[ACTOR_DETECTIVE].metasprite_frame_index < 11) {
             active_actors[ACTOR_DETECTIVE].metasprite_frame_index = 11;
             detective_platform_frame_start = 11;
             detective_platform_frame_end = 16;
         }
-    } else if ((joy & (J_LEFT | J_RIGHT) && (joy & J_DOWN) && (joy & J_A))) {
+    } else if ((joy & (J_LEFT | J_RIGHT) && (joy & J_DOWN) && jumping == 1)) {
         if (active_actors[ACTOR_DETECTIVE].metasprite_frame_index < 11) {
             active_actors[ACTOR_DETECTIVE].metasprite_frame_index = 11;
             detective_platform_frame_start = 11;

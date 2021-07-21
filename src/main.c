@@ -20,26 +20,30 @@ UINT8 detective_platform_frame_end;
 /******************************/
 // Load enemies sequencially up to MAX_ACTIVE_ACTORS
 /******************************/
-void move_enemies() {
+void move_arrows() {
     actor_t *current_actor = &active_actors[1];  //The Detective is currently active_actors[0], so active_actors[1] and above are enemies
 
-    if (current_actor->x <= 16) {
-        current_actor->direction = FACE_RIGHT;
-    } else if (current_actor->x >= 160) {
-        current_actor->direction = FACE_LEFT;
-    }
-    if (current_actor->direction == FACE_LEFT) {
-        for (UINT8 i = 1; i < active_actors_count; i++) {
+    for (UINT8 i = 1; i < active_actors_count; i++) {
+        if (current_actor->direction == FACE_LEFT) {
             current_actor->x--;
-            current_actor++;
-        }
-    } else if (current_actor->direction == FACE_RIGHT) {
-        for (UINT8 i = 1; i < active_actors_count; i++) {
+        } else if (current_actor->direction == FACE_RIGHT) {
             current_actor->x++;
-            current_actor++;
         }
+        if (current_actor->x == 16) {
+            current_actor->direction = FACE_RIGHT;
+        } else if (current_actor->x == 160) {
+            current_actor->direction = FACE_LEFT;
+        }
+        current_actor++;
     }
 }
+// if (current_actor->direction == FACE_RIGHT) {
+//     for (UINT8 i = 1; i < active_actors_count; i++) {
+//         current_actor->x++;
+//         current_actor++;
+//     }
+// }
+// }
 /******************************/
 // Define your OBJ and BGP palettes, show SPRITES, turn on DISPLAY
 /******************************/
@@ -90,7 +94,7 @@ void main() {
             }
         }
 
-        move_enemies();
+        move_arrows();
         render_actors();  //see scene.c
         wait_vbl_done();
     }

@@ -6,5 +6,5 @@
 #include "../res/tiles/detective_platform_stand.h"
 #include "../res/tiles/enemy_arrow.h"
 
-extern const struct actor_t level1_actors[2];
+extern const struct actor_t level1_actors[3];
 extern const struct level_t level1;

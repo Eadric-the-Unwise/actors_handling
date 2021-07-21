@@ -71,40 +71,40 @@ Area                       Addr        Size        Decimal Bytes (Attributes)
      00000003  l__HEADER |    00000003  l__HRAM12 |    00000005  l__HEADER
      00000006  l__HEADER |    00000007  l__HEADER |    00000008  l__HEADER
      00000018  l__BSS    |    0000002B  l__GSINIT |    0000002C  l__HEADER
-     00000030  l__HEADER |    0000005F  l__DATA   |    0000006A  l__HOME  
+     00000030  l__HEADER |    00000061  l__DATA   |    0000006A  l__HOME  
      0000007F  l__BASE   |    00000083  l__HEADER |    00000200  s__CODE  
-     00001512  l__CODE   |    00001712  s__HOME   |    0000177C  s__BASE  
-     000017FB  s__CODE_0 |    000017FB  s__GSINIT |    000017FB  s__INITIA
-     000017FB  s__LIT    |    00001826  s__GSFINA |    0000C000  _shadow_O
-     0000C0A0  s__DATA   |    0000C0FF  s__BSS    |    0000C117  s__HEAP  
-     0000C117  s__INITIA |    0000E000  .STACK    |    0000FF80  .refresh_
+     0000158F  l__CODE   |    0000178F  s__HOME   |    000017F9  s__BASE  
+     00001878  s__CODE_0 |    00001878  s__GSINIT |    00001878  s__INITIA
+     00001878  s__LIT    |    000018A3  s__GSFINA |    0000C000  _shadow_O
+     0000C0A0  s__DATA   |    0000C101  s__BSS    |    0000C119  s__HEAP  
+     0000C119  s__INITIA |    0000E000  .STACK    |    0000FF80  .refresh_
 ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
 Hexadecimal  [32-Bits]
 
 Area                       Addr        Size        Decimal Bytes (Attributes)
 --------------------       ----        ----        ------- ----- ------------
-_CODE                  00000200    00001512 =        5394. bytes (REL,CON)
+_CODE                  00000200    0000158F =        5519. bytes (REL,CON)
 
         Value  Global            Value  Global            Value  Global    
         -----  ------            -----  ------            -----  ------    
      00000200  _level1_a |    00000216  _level1   |    00000219  _level2_a
      00000245  _level2   |    00000248  _move_ene |    0000025F  _main    
-     0000031B  _load_sce |    0000041D  _render_a |    00000572  _animate_
-     00000594  _detectiv |    00000654  _detectiv |    00000660  _detectiv
-     0000066C  _detectiv |    00000678  _detectiv |    0000067E  _detectiv
-     00000EDE  _detectiv |    00000EFA  _detectiv |    00000F12  _detectiv
-     00000F2A  _detectiv |    00000F46  _detectiv |    00000F5E  _detectiv
-     00000F7A  _detectiv |    00000F96  _detectiv |    00000FB2  _detectiv
-     00000FCE  _detectiv |    00000FEA  _detectiv |    00001006  _detectiv
-     0000101E  _detectiv |    0000103A  _detectiv |    00001056  _detectiv
-     00001072  _detectiv |    0000108A  _detectiv |    000010A6  _detectiv
-     000010C8  _detectiv |    00001388  _detectiv |    000013A4  _detectiv
-     000013C0  _detectiv |    000013DC  _detectiv |    000013F8  _detectiv
-     00001414  _detectiv |    00001430  _detectiv |    0000143C  _detectiv
-     000014FC  _detectiv |    00001518  _detectiv |    0000151A  _enemy_ar
-     000015DA  _enemy_ar |    000015E6  _enemy_ar |    000015F2  _enemy_ar
-     000015FE  _enemy_ar |    00001604  ___move_m |    0000163C  ___hide_m
-     0000165C  ___move_m |    00001698  ___move_m |    000016D4  ___move_m
+     00000324  _animate_ |    000003BA  _load_sce |    000004BC  _render_a
+     00000611  _detectiv |    000006D1  _detectiv |    000006DD  _detectiv
+     000006E9  _detectiv |    000006F5  _detectiv |    000006FB  _detectiv
+     00000F5B  _detectiv |    00000F77  _detectiv |    00000F8F  _detectiv
+     00000FA7  _detectiv |    00000FC3  _detectiv |    00000FDB  _detectiv
+     00000FF7  _detectiv |    00001013  _detectiv |    0000102F  _detectiv
+     0000104B  _detectiv |    00001067  _detectiv |    00001083  _detectiv
+     0000109B  _detectiv |    000010B7  _detectiv |    000010D3  _detectiv
+     000010EF  _detectiv |    00001107  _detectiv |    00001123  _detectiv
+     00001145  _detectiv |    00001405  _detectiv |    00001421  _detectiv
+     0000143D  _detectiv |    00001459  _detectiv |    00001475  _detectiv
+     00001491  _detectiv |    000014AD  _detectiv |    000014B9  _detectiv
+     00001579  _detectiv |    00001595  _detectiv |    00001597  _enemy_ar
+     00001657  _enemy_ar |    00001663  _enemy_ar |    0000166F  _enemy_ar
+     0000167B  _enemy_ar |    00001681  ___move_m |    000016B9  ___hide_m
+     000016D9  ___move_m |    00001715  ___move_m |    00001751  ___move_m
 ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
 Hexadecimal  [32-Bits]
 
@@ -279,43 +279,43 @@ Hexadecimal  [32-Bits]
 
 Area                       Addr        Size        Decimal Bytes (Attributes)
 --------------------       ----        ----        ------- ----- ------------
-_HOME                  00001712    0000006A =         106. bytes (REL,CON)
+_HOME                  0000178F    0000006A =         106. bytes (REL,CON)
 
         Value  Global            Value  Global            Value  Global    
         -----  ------            -----  ------            -----  ------    
-     00001712  .remove_V |    00001715  .remove_i |    00001732  .add_VBL 
-     00001735  .add_int  |    00001740  .wait_vbl |    00001740  _wait_vbl
-     0000174F  .display_ |    0000174F  _display_ |    00001766  _remove_V
-     00001771  _add_VBL 
+     0000178F  .remove_V |    00001792  .remove_i |    000017AF  .add_VBL 
+     000017B2  .add_int  |    000017BD  .wait_vbl |    000017BD  _wait_vbl
+     000017CC  .display_ |    000017CC  _display_ |    000017E3  _remove_V
+     000017EE  _add_VBL 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 23.
 Hexadecimal  [32-Bits]
 
 Area                       Addr        Size        Decimal Bytes (Attributes)
 --------------------       ----        ----        ------- ----- ------------
-_BASE                  0000177C    0000007F =         127. bytes (REL,CON)
+_BASE                  000017F9    0000007F =         127. bytes (REL,CON)
 
         Value  Global            Value  Global            Value  Global    
         -----  ------            -----  ------            -----  ------    
-     0000177C  _set_tile |    00001781  _set_bkg_ |    00001781  _set_win_
-     00001789  _set_spri |    000017B9  .padup    |    000017B9  _waitpadu
-     000017C9  .jpad     |    000017C9  _joypad   |    000017F1  _waitpad 
-     000017F4  .wait_pad
+     000017F9  _set_tile |    000017FE  _set_bkg_ |    000017FE  _set_win_
+     00001806  _set_spri |    00001836  .padup    |    00001836  _waitpadu
+     00001846  .jpad     |    00001846  _joypad   |    0000186E  _waitpad 
+     00001871  .wait_pad
 ASxxxx Linker V03.00 + NoICE + sdld,  page 24.
 Hexadecimal  [32-Bits]
 
 Area                       Addr        Size        Decimal Bytes (Attributes)
 --------------------       ----        ----        ------- ----- ------------
-_GSINIT                000017FB    0000002B =          43. bytes (REL,CON)
+_GSINIT                00001878    0000002B =          43. bytes (REL,CON)
 
         Value  Global            Value  Global            Value  Global    
         -----  ------            -----  ------            -----  ------    
-     000017FB  gsinit   
+     00001878  gsinit   
 ASxxxx Linker V03.00 + NoICE + sdld,  page 25.
 Hexadecimal  [32-Bits]
 
 Area                       Addr        Size        Decimal Bytes (Attributes)
 --------------------       ----        ----        ------- ----- ------------
-_GSFINAL               00001826    00000001 =           1. bytes (REL,CON)
+_GSFINAL               000018A3    00000001 =           1. bytes (REL,CON)
 
         Value  Global            Value  Global            Value  Global    
         -----  ------            -----  ------            -----  ------    
@@ -324,24 +324,24 @@ Hexadecimal  [32-Bits]
 
 Area                       Addr        Size        Decimal Bytes (Attributes)
 --------------------       ----        ----        ------- ----- ------------
-_DATA                  0000C0A0    0000005F =          95. bytes (REL,CON)
+_DATA                  0000C0A0    00000061 =          97. bytes (REL,CON)
 
         Value  Global            Value  Global            Value  Global    
         -----  ------            -----  ------            -----  ------    
-     0000C0A0  _joy      |    0000C0A1  _hiwater  |    0000C0A2  _active_a
-     0000C0FA  _active_a |    0000C0FB  ___curren |    0000C0FD  ___curren
-     0000C0FE  ___render
+     0000C0A0  _joy      |    0000C0A1  _hiwater  |    0000C0A2  _detectiv
+     0000C0A3  _detectiv |    0000C0A4  _active_a |    0000C0FC  _active_a
+     0000C0FD  ___curren |    0000C0FF  ___curren |    0000C100  ___render
 ASxxxx Linker V03.00 + NoICE + sdld,  page 27.
 Hexadecimal  [32-Bits]
 
 Area                       Addr        Size        Decimal Bytes (Attributes)
 --------------------       ----        ----        ------- ----- ------------
-_BSS                   0000C0FF    00000018 =          24. bytes (REL,CON)
+_BSS                   0000C101    00000018 =          24. bytes (REL,CON)
 
         Value  Global            Value  Global            Value  Global    
         -----  ------            -----  ------            -----  ------    
-     0000C0FF  __cpu     |    0000C100  .mode     |    0000C101  .sys_time
-     0000C101  _sys_time |    0000C103  .int_0x40
+     0000C101  __cpu     |    0000C102  .mode     |    0000C103  .sys_time
+     0000C103  _sys_time |    0000C105  .int_0x40
 ASxxxx Linker V03.00 + NoICE + sdld,  page 28.
 Hexadecimal  [32-Bits]
 
@@ -908,23 +908,23 @@ Files Linked                              [ module(s) ]
 
 C:\c_code\gbdk\lib/small/asxxxx/gb/crt0.o
                                           [ Runtime ]
-C:\Users\User\AppData\Local\Temp/lcc56920.rel
+C:\Users\User\AppData\Local\Temp/lcc183640.rel
                                           [ level1 ]
-C:\Users\User\AppData\Local\Temp/lcc56921.rel
+C:\Users\User\AppData\Local\Temp/lcc183641.rel
                                           [ level2 ]
-C:\Users\User\AppData\Local\Temp/lcc56922.rel
+C:\Users\User\AppData\Local\Temp/lcc183642.rel
                                           [ main ]
-C:\Users\User\AppData\Local\Temp/lcc56923.rel
+C:\Users\User\AppData\Local\Temp/lcc183643.rel
                                           [ scene ]
-C:\Users\User\AppData\Local\Temp/lcc56924.rel
+C:\Users\User\AppData\Local\Temp/lcc183644.rel
                                           [ detective ]
-C:\Users\User\AppData\Local\Temp/lcc56925.rel
+C:\Users\User\AppData\Local\Temp/lcc183645.rel
                                           [ detective_large ]
-C:\Users\User\AppData\Local\Temp/lcc56926.rel
+C:\Users\User\AppData\Local\Temp/lcc183646.rel
                                           [ detective_large_walk ]
-C:\Users\User\AppData\Local\Temp/lcc56927.rel
+C:\Users\User\AppData\Local\Temp/lcc183647.rel
                                           [ detective_platform_stand ]
-C:\Users\User\AppData\Local\Temp/lcc56928.rel
+C:\Users\User\AppData\Local\Temp/lcc183648.rel
                                           [ enemy_arrow ]
 
 

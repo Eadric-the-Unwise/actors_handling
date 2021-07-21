@@ -14,6 +14,8 @@
 
 UINT8 joy;
 UINT8 hiwater;
+UINT8 detective_platform_frame_start;
+UINT8 detective_platform_frame_end;
 
 /******************************/
 // Load enemies sequencially up to MAX_ACTIVE_ACTORS
@@ -55,20 +57,22 @@ void main() {
             animate_detective();
         } else if (joy & J_DOWN) {
             active_actors[ACTOR_DETECTIVE].metasprite_frame_index = 1;
+        } else if (joy & J_A) {
+            animate_detective();
         }
         /******************************/
         // Load stages on button press
         /******************************/
-        if (joy & J_A) {
+        if (joy & J_START) {
             load_scene_actors(level2.actors, level2.actor_count);
-        } else if (joy & J_B) {
+        } else if (joy & J_SELECT) {
             load_scene_actors(level1.actors, level1.actor_count);
         }
 
         /******************************/
         // NOT PRESSING DIRECTION
         /******************************/
-        if (!(joy & (J_LEFT | J_RIGHT | J_UP | J_DOWN))) {
+        if (!(joy & (J_LEFT | J_RIGHT | J_UP | J_DOWN | J_A))) {
             if (active_actors[ACTOR_DETECTIVE].metasprite_frame_index != 0) {
                 active_actors[ACTOR_DETECTIVE].metasprite_frame_index = 0;
             }
@@ -77,6 +81,50 @@ void main() {
         move_enemies();
         render_actors();  //see scene.c
         wait_vbl_done();
+    }
+}
+
+void animate_detective() {
+    if ((joy & (J_LEFT | J_RIGHT) && !(joy & J_DOWN))) {
+        detective_platform_frame_start = 5;
+        detective_platform_frame_end = 10;
+        if (active_actors[ACTOR_DETECTIVE].metasprite_frame_index < detective_platform_frame_start || active_actors[ACTOR_DETECTIVE].metasprite_frame_index > detective_platform_frame_end) {
+            active_actors[ACTOR_DETECTIVE].metasprite_frame_index = 5;
+        }
+    } else if ((joy & (J_LEFT | J_RIGHT) && (joy & J_DOWN))) {
+        detective_platform_frame_start = 1;
+        detective_platform_frame_end = 4;
+        if (active_actors[ACTOR_DETECTIVE].metasprite_frame_index > detective_platform_frame_end) {
+            active_actors[ACTOR_DETECTIVE].metasprite_frame_index = 1;
+        }
+    } else if (joy & J_A) {
+        detective_platform_frame_start = 11;
+        detective_platform_frame_end = 16;
+    }
+    // The amount of delay between frame animation. Decrement animation delays
+    if (active_actors[ACTOR_DETECTIVE].metasprite_frame_index == 0) {
+        active_actors[ACTOR_DETECTIVE].metasprite_frame_index = detective_platform_frame_start;
+    }
+    if (active_actors[ACTOR_DETECTIVE].frame_delay > 0) {
+        active_actors[ACTOR_DETECTIVE].frame_delay--;
+
+        if (active_actors[ACTOR_DETECTIVE].frame_delay == 0) {
+            // Animate the body when detective is moving.
+            if (active_actors[ACTOR_DETECTIVE].metasprite_frame_index == 5 || active_actors[ACTOR_DETECTIVE].metasprite_frame_index == 8) {
+                active_actors[ACTOR_DETECTIVE].frame_delay = 10;
+            } else {
+                active_actors[ACTOR_DETECTIVE].frame_delay = 6;
+            }
+            active_actors[ACTOR_DETECTIVE].metasprite_frame_index++;
+
+            // if (active_actors[ACTOR_DETECTIVE].metasprite_frame_index > 10) {
+            //     active_actors[ACTOR_DETECTIVE].metasprite_frame_index = 5;
+            // }
+            if (active_actors[ACTOR_DETECTIVE].metasprite_frame_index > detective_platform_frame_end) {
+                active_actors[ACTOR_DETECTIVE].metasprite_frame_index = detective_platform_frame_start;
+            }
+        }
+        // detective->body_frame_delay = detective->body_frame_index % 2 ? FRAME_DELAY * 2 : FRAME_DELAY;
     }
 }
 

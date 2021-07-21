@@ -22,6 +22,7 @@ const actor_t level1_actors[2] =
          .metasprite_frame_index = 0},
         {.x = 160,
          .y = 60,
+         .direction = FACE_LEFT,
          .tile_count = (sizeof(enemy_arrow_data) >> 4),
          .tile_index = 0,
          .tile_data = enemy_arrow_data,

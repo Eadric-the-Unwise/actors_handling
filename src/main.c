@@ -14,6 +14,7 @@
 
 UINT8 joy;
 UINT8 hiwater;
+
 /******************************/
 // Load enemies sequencially up to MAX_ACTIVE_ACTORS
 /******************************/

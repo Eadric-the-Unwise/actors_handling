@@ -107,7 +107,7 @@ void animate_detective() {
         if (active_actors[ACTOR_DETECTIVE].metasprite_frame_index < detective_platform_frame_start || active_actors[ACTOR_DETECTIVE].metasprite_frame_index > detective_platform_frame_end) {
             active_actors[ACTOR_DETECTIVE].metasprite_frame_index = 5;
         }
-    } else if ((joy & (J_LEFT | J_RIGHT) && (joy & J_DOWN))) {
+    } else if ((joy & (J_LEFT | J_RIGHT) && (joy & J_DOWN) && !(joy & J_A))) {
         detective_platform_frame_start = 1;
         detective_platform_frame_end = 4;
         if (active_actors[ACTOR_DETECTIVE].metasprite_frame_index > detective_platform_frame_end) {
@@ -121,8 +121,17 @@ void animate_detective() {
             detective_platform_frame_end = 16;
         }
     } else if ((joy & (J_LEFT | J_RIGHT) && (joy & J_A))) {
-        detective_platform_frame_start = 11;
-        detective_platform_frame_end = 16;
+        if (active_actors[ACTOR_DETECTIVE].metasprite_frame_index < 11) {
+            active_actors[ACTOR_DETECTIVE].metasprite_frame_index = 11;
+            detective_platform_frame_start = 11;
+            detective_platform_frame_end = 16;
+        }
+    } else if ((joy & (J_LEFT | J_RIGHT) && (joy & J_DOWN) && (joy & J_A))) {
+        if (active_actors[ACTOR_DETECTIVE].metasprite_frame_index < 11) {
+            active_actors[ACTOR_DETECTIVE].metasprite_frame_index = 11;
+            detective_platform_frame_start = 11;
+            detective_platform_frame_end = 16;
+        }
     }
     // The amount of delay between frame animation. Decrement animation delays
     if (active_actors[ACTOR_DETECTIVE].metasprite_frame_index == 0) {

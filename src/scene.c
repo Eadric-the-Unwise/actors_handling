@@ -15,6 +15,8 @@ void load_scene_actors(const actor_t *actor, uint8_t actors_count) {
         set_sprite_data(hiwater, actor->tile_count, actor->tile_data);
         current_actor->x = actor->x;
         current_actor->y = actor->y;
+        current_actor->SpdX = actor->SpdX;
+        current_actor->SpdY = actor->SpdY;
         current_actor->direction = actor->direction;
         current_actor->frame_delay = actor->frame_delay;
         current_actor->actor_metasprites = actor->actor_metasprites;
@@ -36,14 +38,14 @@ void render_actors() {
                 current_actor->actor_metasprites[current_actor->metasprite_frame_index],
                 current_actor->tile_index,
                 hiwater,
-                current_actor->x, current_actor->y);
+                current_actor->x, current_actor->y >> 4);
             current_actor++;
         } else if (current_actor->direction == FACE_RIGHT) {
             hiwater += move_metasprite_vflip(
                 current_actor->actor_metasprites[current_actor->metasprite_frame_index],
                 current_actor->tile_index,
                 hiwater,
-                current_actor->x, current_actor->y);
+                current_actor->x, current_actor->y >> 4);
             current_actor++;
         }
     }

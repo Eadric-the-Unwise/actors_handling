@@ -14,14 +14,20 @@
 
 UINT8 joy;
 UINT8 hiwater;
-UINT8 detective_platform_frame_start;
-UINT8 detective_platform_frame_end;
-UINT8 playerlocation[2];
-UBYTE jumping = 0;
+UINT8 detective_platform_frame_start, detective_platform_frame_end;
+UBYTE jumping, falling;
+UINT8 jump_timer = JUMP_TIMER;
 INT8 gravity = -1;
 UINT8 currentspeedY;
 UINT8 floorYposition;
 UINT8 gravite_delay = 8;
+#define ACC_X 1
+#define ACC_Y 2
+// sprite coords
+//SIGNED allows negative numbers, unsigned does NOT
+UINT16 PosX, PosY;
+INT16 SpdX, SpdY;
+UINT8 PosF, Jump;
 
 /******************************/
 // Load enemies sequencially up to MAX_ACTIVE_ACTORS
@@ -43,33 +49,42 @@ void move_arrows() {
         current_actor++;
     }
 }
-INT8 wouldhitsurface(UINT8 projectedYPosition) {
-    if (projectedYPosition >= floorYposition) {
-        return floorYposition;
-    }
-    return -1;
-}
-
-void jump() {
-    INT8 possiblesurfaceY;
-    actor_t *detective = &active_actors[ACTOR_DETECTIVE];
-
-    if (jumping == 0) {
-        jumping = 1;
-        currentspeedY = 2;
-    }
-    //gravity = -1
-    if (floorYposition - detective->y > 45) {
-        currentspeedY = currentspeedY + gravity;
-    }
-    detective->y = detective->y - currentspeedY;
-
-    possiblesurfaceY = wouldhitsurface(detective->y);
-
-    if (possiblesurfaceY > -1) {
-        jumping = 0;
+void update_actors() {
+    actor_t *current_actor = &active_actors[0];
+    for (UINT8 i = 0; i < active_actors_count; i++) {
+        active_actors[i].y += active_actors[i].SpdY;
+        active_actors[i].x += active_actors[i].SpdX;
+        current_actor++;
     }
 }
+
+// INT8 wouldhitsurface(UINT8 projectedYPosition) {
+//     if (projectedYPosition >= floorYposition) {
+//         return floorYposition;
+//     }
+//     return -1;
+// }
+
+// void jump() {
+//     INT8 possiblesurfaceY;
+//     actor_t *detective = &active_actors[ACTOR_DETECTIVE];
+
+//     if (jumping == 0) {
+//         jumping = 1;
+//         currentspeedY = 2;
+//     }
+//     //gravity = -1
+//     if (floorYposition - detective->y > 45) {
+//         currentspeedY = currentspeedY + gravity;
+//     }
+//     detective->y = detective->y - currentspeedY;
+
+//     possiblesurfaceY = wouldhitsurface(detective->y);
+
+//     if (possiblesurfaceY > -1) {
+//         jumping = 0;
+//     }
+// }
 
 /******************************/
 // Define your OBJ and BGP palettes, show SPRITES, turn on DISPLAY
@@ -86,28 +101,41 @@ void main() {
     floorYposition = 120;
     jumping = 0;
 
+    Jump = SpdX = SpdY = 0;
     load_scene_actors(level1.actors, level1.actor_count);  //Loads level1.c actors
-    // playerlocation[0] = active_actors[ACTOR_DETECTIVE].x;
-    // playerlocation[1] = active_actors[ACTOR_DETECTIVE].y;
+
     while (TRUE) {
+        PosF = 0;
         joy = joypad();
         /******************************/
         // Basic AI movement for Enemies ONLY
         /******************************/
+        if (joy & J_UP) {
+            SpdY -= 2;
+            if (SpdY < -8) SpdY = -8;
+            PosF |= ACC_Y;
+        }
         if (joy & J_LEFT) {
             active_actors[ACTOR_DETECTIVE].x--;
             active_actors[ACTOR_DETECTIVE].direction = FACE_LEFT;
-            animate_detective();
+            if (!(joy & (J_A))) {
+                animate_detective();
+            } else {
+            }
         } else if (joy & J_RIGHT) {
             active_actors[ACTOR_DETECTIVE].x++;
             active_actors[ACTOR_DETECTIVE].direction = FACE_RIGHT;
-            animate_detective();
+            if (!(joy & (J_A))) {
+                animate_detective();
+            } else {
+            }
         } else if (joy & J_DOWN) {
             animate_detective();
         }
-        if (joy & J_A || jumping == 1) {
-            jump();
-            animate_detective();
+        if (joy & J_A) {
+            // jump();
+            jumping = 1;
+            // animate_detective();
         }
         /******************************/
         // Load stages on button press
@@ -127,8 +155,36 @@ void main() {
             }
         }
 
+        // jump
+        if (jumping == 1) {
+            active_actors[ACTOR_DETECTIVE].SpdY = -32;
+            jump_timer--;
+            PosF |= ACC_Y;
+        }
+        if (jump_timer == 0) {
+            falling = 1;
+            jumping = 0;
+            jump_timer = JUMP_TIMER;
+        }
+        if (falling == 1) {
+            active_actors[ACTOR_DETECTIVE].SpdY += 8;
+            if (active_actors[ACTOR_DETECTIVE].SpdY > 32) {
+                active_actors[ACTOR_DETECTIVE].SpdY = 32;
+            }
+        }
+
         move_arrows();
+        update_actors();
         render_actors();  //see scene.c
+        if (!(PosF & ACC_Y)) {
+            if (active_actors[ACTOR_DETECTIVE].SpdY >= 0) {
+                if (active_actors[ACTOR_DETECTIVE].SpdY) {
+                    active_actors[ACTOR_DETECTIVE].SpdY--;
+                }
+            } else {
+                active_actors[ACTOR_DETECTIVE].SpdY++;
+            }
+        }
         wait_vbl_done();
     }
 }

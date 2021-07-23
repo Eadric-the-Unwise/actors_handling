@@ -20,71 +20,13 @@ UINT8 fall_timer = 0;
 INT8 gravity = -1;
 UINT8 currentspeedY;
 UINT8 floorYposition;
-UINT8 gravite_delay = 8;
-#define ACC_X 1
-#define ACC_Y 2
-// sprite coords
-//SIGNED allows negative numbers, unsigned does NOT
+
+/******************************/
+// 16BIT COORDINATES
+/******************************/
 UINT16 PosX, PosY;
 INT16 SpdX, SpdY;
 UINT8 PosF, Jump, Fall;
-
-/******************************/
-// Load enemies sequencially up to MAX_ACTIVE_ACTORS
-/******************************/
-void move_arrows() {
-    actor_t *current_actor = &active_actors[1];  //The Detective is currently active_actors[0], so active_actors[1] and above are enemies
-
-    for (UINT8 i = 1; i < active_actors_count; i++) {
-        if (current_actor->direction == FACE_LEFT) {
-            current_actor->x--;
-        } else if (current_actor->direction == FACE_RIGHT) {
-            current_actor->x++;
-        }
-        if (current_actor->x == 16) {
-            current_actor->direction = FACE_RIGHT;
-        } else if (current_actor->x == 160) {
-            current_actor->direction = FACE_LEFT;
-        }
-        current_actor++;
-    }
-}
-void update_actors() {
-    actor_t *current_actor = &active_actors[0];
-    for (UINT8 i = 0; i < active_actors_count; i++) {
-        active_actors[i].y += active_actors[i].SpdY;
-        active_actors[i].x += active_actors[i].SpdX;
-        current_actor++;
-    }
-}
-
-// INT8 wouldhitsurface(UINT8 projectedYPosition) {
-//     if (projectedYPosition >= floorYposition) {
-//         return floorYposition;
-//     }
-//     return -1;
-// }
-
-// void jump() {
-//     INT8 possiblesurfaceY;
-//     actor_t *detective = &active_actors[ACTOR_DETECTIVE];
-
-//     if (jumping == 0) {
-//         jumping = 1;
-//         currentspeedY = 2;
-//     }
-//     //gravity = -1
-//     if (floorYposition - detective->y > 45) {
-//         currentspeedY = currentspeedY + gravity;
-//     }
-//     detective->y = detective->y - currentspeedY;
-
-//     possiblesurfaceY = wouldhitsurface(detective->y);
-
-//     if (possiblesurfaceY > -1) {
-//         jumping = 0;
-//     }
-// }
 
 /******************************/
 // Define your OBJ and BGP palettes, show SPRITES, turn on DISPLAY
@@ -108,14 +50,15 @@ void main() {
     while (TRUE) {
         PosF = 0;
         joy = joypad();
+
         /******************************/
-        // Basic AI movement for Enemies ONLY
+        // JOYPAD INPUTS
         /******************************/
-        if (joy & J_UP) {
-            SpdY -= 2;
-            if (SpdY < -8) SpdY = -8;
-            PosF |= ACC_Y;
-        }
+        // if (joy & J_UP) {
+        //     SpdY -= 2;
+        //     if (SpdY < -8) SpdY = -8;
+        //     PosF |= ACC_Y;
+        // }
         if (joy & J_LEFT) {
             active_actors[ACTOR_DETECTIVE].x--;
             active_actors[ACTOR_DETECTIVE].direction = FACE_LEFT;
@@ -134,15 +77,12 @@ void main() {
             animate_detective();
         }
         if (joy & J_A) {
-            // jump();
-            // jumping = 1;
             Jump = 10;
-            // animate_detective();
         }
+        //DEBUG DETECTIVE Y COORDS
         if (joy & J_B) {
             printf("Y=%u\n", active_actors[ACTOR_DETECTIVE].y >> 4);
         }
-
         /******************************/
         // Load stages on button press
         /******************************/
@@ -151,7 +91,6 @@ void main() {
         } else if (joy & J_SELECT) {
             load_scene_actors(level1.actors, level1.actor_count);
         }
-
         /******************************/
         // NOT PRESSING DIRECTION
         /******************************/
@@ -160,8 +99,7 @@ void main() {
                 active_actors[ACTOR_DETECTIVE].metasprite_frame_index = 0;
             }
         }
-
-        // jump
+        //JUMPING
         if (Jump) {
             jumping = 1;
             active_actors[ACTOR_DETECTIVE].SpdY = -40;
@@ -173,15 +111,7 @@ void main() {
                 jumping = 0;
             }
         }
-        // active_actors[ACTOR_DETECTIVE].SpdY = -16;
-        // if (falling) {
-        //     fall_timer++;
-        //     if (fall_timer >= FALL_DELAY) {
-        //         Fall = 1;
-        //         fall_timer = 0;
-        //         falling = 0;
-        //     }
-        // }
+        //FALLING
         if (Fall) {
             active_actors[ACTOR_DETECTIVE].SpdY += 4;
             if (active_actors[ACTOR_DETECTIVE].SpdY > 48) {
@@ -192,12 +122,7 @@ void main() {
                 Fall = 0;
             }
         }
-
-        move_arrows();
-        update_actors();
-        render_actors();  //see scene.c
-        // check_detective_y();
-        // && !(Fall)
+        //GRAVITY (FRICTION)
         if (!(PosF & ACC_Y)) {
             if (active_actors[ACTOR_DETECTIVE].SpdY >= 0) {
                 if (active_actors[ACTOR_DETECTIVE].SpdY) {
@@ -207,10 +132,23 @@ void main() {
                 active_actors[ACTOR_DETECTIVE].SpdY++;
             }
         }
+        /******************************/
+        // SEE SCENE.C FOR THESE FUNCTIONS
+        /******************************/
+        move_arrows();
+        update_actors_xy();
+        render_actors();
+
+        // check_detective_y();
+        // && !(Fall)
+
         wait_vbl_done();
     }
 }
 
+/******************************/
+// DETECTIVE SPRITE ANIMATIONS
+/******************************/
 void animate_detective() {
     if ((joy & (J_LEFT | J_RIGHT) && !(joy & (J_DOWN | J_A)))) {
         detective_platform_frame_start = 5;
@@ -296,3 +234,41 @@ void animate_detective() {
 // move_metasprite(enemy_arrow_metasprites[0], 0x0C, 2, 40, 40);
 
 // load_scene_actors(&actor[0]);  //"&actors[0]" is just "actors"
+
+// INT8 wouldhitsurface(UINT8 projectedYPosition) {
+//     if (projectedYPosition >= floorYposition) {
+//         return floorYposition;
+//     }
+//     return -1;
+// }
+
+// void jump() {
+//     INT8 possiblesurfaceY;
+//     actor_t *detective = &active_actors[ACTOR_DETECTIVE];
+
+//     if (jumping == 0) {
+//         jumping = 1;
+//         currentspeedY = 2;
+//     }
+//     //gravity = -1
+//     if (floorYposition - detective->y > 45) {
+//         currentspeedY = currentspeedY + gravity;
+//     }
+//     detective->y = detective->y - currentspeedY;
+
+//     possiblesurfaceY = wouldhitsurface(detective->y);
+
+//     if (possiblesurfaceY > -1) {
+//         jumping = 0;
+//     }
+// }
+
+// active_actors[ACTOR_DETECTIVE].SpdY = -16;
+// if (falling) {
+//     fall_timer++;
+//     if (fall_timer >= FALL_DELAY) {
+//         Fall = 1;
+//         fall_timer = 0;
+//         falling = 0;
+//     }
+// }

@@ -10,6 +10,8 @@
 #define FACE_LEFT 1
 #define FACE_RIGHT 0
 #define FALL_DELAY 12
+#define ACC_X 1
+#define ACC_Y 2
 
 typedef struct actor_t {
     UINT8 x;
@@ -38,5 +40,7 @@ extern UINT8 active_actors_count;
 void load_scene_actors(const actor_t *actor, uint8_t actors_count);
 void render_actors();
 void animate_detective();
+void move_arrows();
+void update_actors_xy();
 
 #endif

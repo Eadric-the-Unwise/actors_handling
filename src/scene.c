@@ -6,6 +6,9 @@
 actor_t active_actors[MAX_ACTIVE_ACTORS];  // active_actors[] is your working structures in WRAM
 UINT8 active_actors_count;                 // amount of actors that are currently active
 
+/******************************/
+// Load enemies sequencially up to MAX_ACTIVE_ACTORS
+/******************************/
 void load_scene_actors(const actor_t *actor, uint8_t actors_count) {
     actor_t *current_actor = active_actors;
 
@@ -51,4 +54,31 @@ void render_actors() {
     }
     // hide rest of the hardware sprites
     for (UINT8 i = hiwater; i < 40u; i++) shadow_OAM[i].y = 0;
+}
+
+void update_actors_xy() {
+    actor_t *current_actor = &active_actors[0];
+    for (UINT8 i = 0; i < active_actors_count; i++) {
+        active_actors[i].y += active_actors[i].SpdY;
+        active_actors[i].x += active_actors[i].SpdX;
+        current_actor++;
+    }
+}
+
+void move_arrows() {
+    actor_t *current_actor = &active_actors[1];  //The Detective is currently active_actors[0], so active_actors[1] and above are enemies
+
+    for (UINT8 i = 1; i < active_actors_count; i++) {
+        if (current_actor->direction == FACE_LEFT) {
+            current_actor->x--;
+        } else if (current_actor->direction == FACE_RIGHT) {
+            current_actor->x++;
+        }
+        if (current_actor->x == 16) {
+            current_actor->direction = FACE_RIGHT;
+        } else if (current_actor->x == 160) {
+            current_actor->direction = FACE_LEFT;
+        }
+        current_actor++;
+    }
 }

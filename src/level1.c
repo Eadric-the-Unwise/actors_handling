@@ -12,7 +12,7 @@
 const actor_t level1_actors[3] =
     {
         {.x = 88,
-         .y = 120 << 4,
+         .y = 100 << 4,
          .direction = FACE_LEFT,
          .tile_count = (sizeof(detective_large_data) >> 4),
          .tile_index = 0,

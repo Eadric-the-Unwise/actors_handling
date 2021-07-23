@@ -9,7 +9,7 @@
 #define ACTOR_DETECTIVE 0
 #define FACE_LEFT 1
 #define FACE_RIGHT 0
-#define JUMP_TIMER 15
+#define FALL_DELAY 12
 
 typedef struct actor_t {
     UINT8 x;

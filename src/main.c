@@ -16,7 +16,7 @@ UINT8 joy;
 UINT8 hiwater;
 UINT8 detective_platform_frame_start, detective_platform_frame_end;
 UBYTE jumping, falling;
-UINT8 jump_timer = JUMP_TIMER;
+UINT8 fall_timer = 0;
 INT8 gravity = -1;
 UINT8 currentspeedY;
 UINT8 floorYposition;
@@ -27,7 +27,7 @@ UINT8 gravite_delay = 8;
 //SIGNED allows negative numbers, unsigned does NOT
 UINT16 PosX, PosY;
 INT16 SpdX, SpdY;
-UINT8 PosF, Jump;
+UINT8 PosF, Jump, Fall;
 
 /******************************/
 // Load enemies sequencially up to MAX_ACTIVE_ACTORS
@@ -90,16 +90,17 @@ void update_actors() {
 // Define your OBJ and BGP palettes, show SPRITES, turn on DISPLAY
 /******************************/
 void main() {
-    BGP_REG = 0x00;
+    BGP_REG = 0xE4;
     OBP0_REG = 0xE4;
     OBP1_REG = 0xE1;
     SPRITES_8x16;
     DISPLAY_ON;
-    // SHOW_BKG;
+    SHOW_BKG;
     SHOW_SPRITES;
     hiwater = 0;
-    floorYposition = 120;
-    jumping = 0;
+    floorYposition = 100;
+    jumping = falling = 0;
+    Jump = Fall = 0;
 
     Jump = SpdX = SpdY = 0;
     load_scene_actors(level1.actors, level1.actor_count);  //Loads level1.c actors
@@ -118,14 +119,14 @@ void main() {
         if (joy & J_LEFT) {
             active_actors[ACTOR_DETECTIVE].x--;
             active_actors[ACTOR_DETECTIVE].direction = FACE_LEFT;
-            if (!(joy & (J_A))) {
+            if (!(jumping)) {
                 animate_detective();
             } else {
             }
         } else if (joy & J_RIGHT) {
             active_actors[ACTOR_DETECTIVE].x++;
             active_actors[ACTOR_DETECTIVE].direction = FACE_RIGHT;
-            if (!(joy & (J_A))) {
+            if (!(jumping)) {
                 animate_detective();
             } else {
             }
@@ -134,9 +135,14 @@ void main() {
         }
         if (joy & J_A) {
             // jump();
-            jumping = 1;
+            // jumping = 1;
+            Jump = 10;
             // animate_detective();
         }
+        if (joy & J_B) {
+            printf("Y=%u\n", active_actors[ACTOR_DETECTIVE].y >> 4);
+        }
+
         /******************************/
         // Load stages on button press
         /******************************/
@@ -156,26 +162,42 @@ void main() {
         }
 
         // jump
-        if (jumping == 1) {
-            active_actors[ACTOR_DETECTIVE].SpdY = -32;
-            jump_timer--;
-            PosF |= ACC_Y;
+        if (Jump) {
+            jumping = 1;
+            active_actors[ACTOR_DETECTIVE].SpdY = -40;
+            Jump--;
+            if (Jump == 8) {
+                Fall = 1;
+            }
+            if (Jump == 0) {
+                jumping = 0;
+            }
         }
-        if (jump_timer == 0) {
-            falling = 1;
-            jumping = 0;
-            jump_timer = JUMP_TIMER;
-        }
-        if (falling == 1) {
-            active_actors[ACTOR_DETECTIVE].SpdY += 8;
-            if (active_actors[ACTOR_DETECTIVE].SpdY > 32) {
-                active_actors[ACTOR_DETECTIVE].SpdY = 32;
+        // active_actors[ACTOR_DETECTIVE].SpdY = -16;
+        // if (falling) {
+        //     fall_timer++;
+        //     if (fall_timer >= FALL_DELAY) {
+        //         Fall = 1;
+        //         fall_timer = 0;
+        //         falling = 0;
+        //     }
+        // }
+        if (Fall) {
+            active_actors[ACTOR_DETECTIVE].SpdY += 4;
+            if (active_actors[ACTOR_DETECTIVE].SpdY > 48) {
+                active_actors[ACTOR_DETECTIVE].SpdY = 48;
+            }
+            if (active_actors[ACTOR_DETECTIVE].y >> 4 > floorYposition) {
+                active_actors[ACTOR_DETECTIVE].SpdY = 0;
+                Fall = 0;
             }
         }
 
         move_arrows();
         update_actors();
         render_actors();  //see scene.c
+        // check_detective_y();
+        // && !(Fall)
         if (!(PosF & ACC_Y)) {
             if (active_actors[ACTOR_DETECTIVE].SpdY >= 0) {
                 if (active_actors[ACTOR_DETECTIVE].SpdY) {
